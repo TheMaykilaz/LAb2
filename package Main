@@ -1,0 +1,48 @@
+import java.util.Scanner;
+public class main {    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введіть кількість абонентів: ");
+        int count = scanner.nextInt();        Phone[] phones = new Phone[count];
+
+        for (int i = 0; i < count; i++) {            System.out.println("\nВведіть дані для абонента №" + (i + 1) + ":");
+            System.out.print("ID: ");            int id = scanner.nextInt();
+            scanner.nextLine();
+            System.out.print("Прізвище: ");            String lastName = scanner.nextLine();
+            System.out.print("Ім'я: ");
+            String firstName = scanner.nextLine();
+            System.out.print("Номер рахунку: ");            String accountNumber = scanner.nextLine();
+            System.out.print("Час міських розмов (хвилини): ");
+            int localCallTime = scanner.nextInt();
+            System.out.print("Час міжміських розмов (хвилини): ");            int intercityCallTime = scanner.nextInt();
+
+            phones[i] = new Phone(id, lastName, firstName, accountNumber, localCallTime, intercityCallTime);        }
+        // a) Задання критерію для часу міських розмов
+        System.out.print("\nВведіть мінімальний час міських розмов (хвилини): ");        int minLocalCallTime = scanner.nextInt();
+        printLocalCallsExceeding(phones, minLocalCallTime);
+        // b) Виводимо тих, хто користувався міжміським зв'язком        printIntercityUsers(phones);
+        // c) Задання діапазону номерів рахунків
+        System.out.print("\nВведіть мінімальний номер рахунку: ");        String minAccount = scanner.next();
+        System.out.print("Введіть максимальний номер рахунку: ");        String maxAccount = scanner.next();
+        printByAccountRange(phones, minAccount, maxAccount);
+        scanner.close();    }
+    // Метод для виведення абонентів з часом міських розмов більше певного значення
+    public static void printLocalCallsExceeding(Phone[] phones, int minLocalCallTime) {        System.out.println("\nАбоненти з часом міських розмов більше " + minLocalCallTime + " хвилин:");
+        for (Phone phone : phones) {            if (phone.getLocalCallTime() > minLocalCallTime) {
+                System.out.println(phone);            }
+        }    }
+    // Метод для виведення абонентів, які користувались міжміським зв'язком
+    public static void printIntercityUsers(Phone[] phones) {        System.out.println("\nАбоненти, які користувались міжміським зв'язком:");
+        int total_time = 0;        int total_count = 0;
+        for (Phone phone : phones) {            if (phone.getIntercityCallTime() > 0) {
+                System.out.println(phone);                total_time += phone.getIntercityCallTime();
+                total_count++;            }
+        }        if (total_count > 0) {
+            double serednye = (double) total_time / total_count;            System.out.println("Середнє: " + serednye);
+        }        else {
+            System.out.println("Нема ");        }
+    }
+    // Метод для виведення абонентів, чий номер рахунку знаходиться у вказаному діапазоні    public static void printByAccountRange(Phone[] phones, String minAccount, String maxAccount) {
+        System.out.println("\nАбоненти з номером рахунку в діапазоні від " + minAccount + " до " + maxAccount + ":");        for (Phone phone : phones) {
+            if (phone.getAccountNumber().compareTo(minAccount) >= 0 && phone.getAccountNumber().compareTo(maxAccount) <= 0) {                System.out.println(phone);
+            }        }
+    }}
